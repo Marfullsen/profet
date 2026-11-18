@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5f1e9">
+<title>Profet — A garden of thoughts</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+:root{
+ --bg:#f5f1e9;--paper:#fffdf8;--paper2:#f0ebe1;--ink:#292b25;--muted:#858579;
+ --line:#e7e0d4;--gold:#b68a4d;--gold2:#ead8b8;--green:#55765e;--green2:#e6eee4;
+ --thought:#c99b51;--memory:#b77c6e;--question:#7595a5;--idea:#87996b;--reflection:#9a83a8;
+ --shadow:0 12px 35px rgba(58,48,31,.07);--radius:20px;
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:248px 1fr}
+.sidebar{background:#eeeadf;border-right:1px solid var(--line);padding:28px 18px;display:flex;flex-direction:column;gap:30px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:11px;padding:0 10px}.brand-mark{width:39px;height:39px;border-radius:14px;background:#e2d0ae;color:#795a30;display:grid;place-items:center;font-size:22px}
+.brand-name{font:600 25px 'Playfair Display',serif;letter-spacing:.2px}.brand-sub{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.nav-label{font-size:10px;font-weight:700;color:#aaa294;letter-spacing:1.6px;padding:0 12px;margin-bottom:9px}
+.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#66675e;text-align:left;padding:12px 13px;border-radius:12px;display:flex;gap:12px;align-items:center;font-size:14px}
+.nav button:hover,.nav button.active{background:#fffaf1;color:#765a34}.nav button.active{font-weight:700;box-shadow:0 3px 12px #6e57300c}
+.nav-icon{width:20px;text-align:center;font-size:17px}.sidebar-bottom{margin-top:auto;background:#e4dfd3;border-radius:16px;padding:15px;color:#65665c;font-size:12px;line-height:1.6}
+.main{min-width:0;padding:34px clamp(20px,4vw,62px) 90px;max-width:1500px;width:100%;margin:auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}.eyebrow{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);font-weight:700}
+h1,h2,h3,p{margin-top:0}h1{font:600 clamp(29px,4vw,42px) 'Playfair Display',serif;margin:7px 0 8px;letter-spacing:-.5px}h2{font:600 25px 'Playfair Display',serif}h3{font-size:15px;margin-bottom:8px}.subtitle{color:var(--muted);font-size:14px;margin:0}
+.actions{display:flex;gap:9px;align-items:center}.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:10px 15px;border-radius:12px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}.btn.primary{background:#6b8068;color:white;border-color:#6b8068}.btn.gold{background:#ead9b9;color:#76562d;border-color:#ead9b9}.btn.small{padding:7px 10px;font-size:12px}.icon-btn{border:0;background:transparent;color:var(--muted);font-size:18px;padding:6px}
+.grid{display:grid;gap:18px}.hero-grid{grid-template-columns:minmax(0,1.55fr) minmax(260px,.85fr);margin-bottom:20px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.tree-panel{padding:25px 28px;position:relative;overflow:hidden;min-height:290px;display:flex;flex-direction:column;justify-content:space-between}
+.tree-panel:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:#efe4ce;right:-70px;top:-100px;opacity:.55}
+.tree-head{position:relative;z-index:1}.tree-art{position:absolute;right:8%;bottom:0;width:245px;height:210px;display:grid;place-items:center;z-index:1}
+.tree-art svg{width:100%;height:100%;overflow:visible}.tree-copy{max-width:55%;position:relative;z-index:2}.tree-copy h2{font-size:29px;line-height:1.2;margin:10px 0}.tree-copy p{font-size:13px;color:var(--muted);line-height:1.6}
+.tree-level{display:flex;gap:9px;align-items:center;color:var(--green);font-size:11px;font-weight:700}
+.stats-panel{padding:23px}.stats-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.stats-head h3{margin:0}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:13px;background:#f8f5ef;border-radius:14px}.stat strong{font:600 25px 'Playfair Display',serif;display:block}.stat span{font-size:11px;color:var(--muted)}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:28px 0 14px}.section-head h2{margin:0;font-size:22px}
+.type-grid{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:23px}
+.type-card{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--paper);text-align:left;transition:.2s}
+.type-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.type-symbol{width:37px;height:37px;border-radius:12px;display:grid;place-items:center;font-size:18px;margin-bottom:12px}
+.type-card strong{display:block;font-size:13px}.type-card small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.recent-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.entry-card{padding:17px 18px;background:var(--paper);border:1px solid var(--line);border-radius:16px;cursor:pointer;min-width:0;transition:.18s}
+.entry-card:hover{border-color:#cbb58e;transform:translateY(-2px)}.entry-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.type-pill{font-size:10px;font-weight:700;padding:5px 8px;border-radius:20px;white-space:nowrap}
+.entry-card h3{font:600 17px 'Playfair Display',serif;margin:0 0 6px;overflow-wrap:anywhere}.entry-card p{font-size:12px;line-height:1.55;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.entry-meta{display:flex;justify-content:space-between;gap:10px;margin-top:14px;color:#a09a8e;font-size:10px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 17px}.field{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:11px 13px;color:var(--ink);outline:none}.field:focus,textarea:focus,select:focus{border-color:#b99a68;box-shadow:0 0 0 3px #b99a681c}.search{flex:1;min-width:190px}
+.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:var(--paper);color:#77766d;border-radius:30px;padding:7px 12px;font-size:11px}.chip.active{background:#e9ddc8;border-color:#e9ddc8;color:#755a34;font-weight:700}
+.empty{padding:55px 20px;text-align:center;background:var(--paper);border:1px dashed #d9d0c0;border-radius:18px;color:var(--muted)}.empty .big{font-size:32px;margin-bottom:12px}.empty h3{font:600 20px 'Playfair Display',serif;color:var(--ink)}
+.calendar-wrap{padding:22px}.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.calendar-head h2{margin:0}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.weekday{text-align:center;color:var(--muted);font-size:10px;padding:8px}.day{border:1px solid transparent;background:#f8f5ef;border-radius:12px;min-height:72px;text-align:left;padding:9px;position:relative;color:var(--ink)}.day.muted{opacity:.35}.day.today{border-color:#bd9b65}.day.selected{background:#eadfc9}.day-num{font-size:12px}.dots{display:flex;gap:3px;margin-top:12px}.dot{width:6px;height:6px;border-radius:50%}.day-detail{margin-top:18px;padding-top:17px;border-top:1px solid var(--line)}
+.profile-grid{grid-template-columns:repeat(3,1fr)}.profile-card{padding:20px}.profile-card strong{font:600 29px 'Playfair Display',serif;display:block}.profile-card span{font-size:12px;color:var(--muted)}
+.modal-backdrop{position:fixed;inset:0;background:#24251f88;z-index:20;display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.show{display:flex}
+.modal{width:min(590px,100%);max-height:90vh;overflow:auto;background:var(--paper);border-radius:22px;padding:25px;box-shadow:0 25px 80px #0003}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h2{margin:0}
+.form-grid{display:grid;gap:13px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:6px;font-size:12px;font-weight:700;color:#66665d}input,textarea,select{width:100%;border:1px solid var(--line);background:#fffefa;border-radius:11px;padding:11px 12px;color:var(--ink);outline:none;font-size:13px}textarea{min-height:115px;resize:vertical;line-height:1.5}.form-actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.detail-content{font-size:14px;line-height:1.7;white-space:pre-wrap;color:#66665d}.detail-meta{font-size:11px;color:var(--muted);margin:10px 0 20px}.related{padding:13px;background:#f5f1e9;border-radius:12px;margin-top:15px;font-size:12px}
+.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,20px);opacity:0;background:#30382f;color:white;padding:11px 17px;border-radius:30px;font-size:12px;z-index:50;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+.mobile-nav{display:none}
+@media(max-width:900px){.app{grid-template-columns:205px 1fr}.hero-grid{grid-template-columns:1fr}.tree-panel{min-height:260px}.type-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){.app{display:block}.sidebar{display:none}.main{padding:23px 15px 100px}.topbar{margin-bottom:23px}.topbar .btn span{display:none}.tree-panel{min-height:270px;padding:21px}.tree-art{width:190px;height:175px;right:0;opacity:.9}.tree-copy{max-width:65%}.tree-copy h2{font-size:24px}.tree-copy p{font-size:11px}.type-grid{grid-template-columns:repeat(2,1fr)}.type-card:last-child{grid-column:span 2}.recent-list{grid-template-columns:1fr}.profile-grid{grid-template-columns:repeat(2,1fr)}.day{min-height:52px;padding:6px}.dots{margin-top:8px}.calendar-wrap{padding:12px}.weekday{font-size:9px}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fffdf8ed;backdrop-filter:blur(12px);border-top:1px solid var(--line);z-index:10;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom))}.mobile-nav button{border:0;background:none;color:#88877d;font-size:10px;display:grid;justify-items:center;gap:3px;min-width:54px}.mobile-nav button b{font-size:18px;font-weight:400}.mobile-nav button.active{color:#88683c}.form-row{grid-template-columns:1fr}.modal{padding:20px}.actions .btn{padding:9px 11px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">✳</div><div><div class="brand-name">Profet</div><div class="brand-sub">A garden of thoughts</div></div></div>
+  <div><div class="nav-label">YOUR SPACE</div><nav class="nav">
+    <button class="active" data-page="wisdom"><span class="nav-icon">♧</span> Wisdom</button>
+    <button data-page="library"><span class="nav-icon">▤</span> Library</button>
+    <button data-page="calendar"><span class="nav-icon">▦</span> Calendar</button>
+    <button data-page="profile"><span class="nav-icon">◉</span> Profile & data</button>
+  </nav></div>
+  <div class="sidebar-bottom">“A thought is a seed. Give it somewhere to grow.”<br><br><b>Everything stays in this browser.</b></div>
+</aside>
+<main class="main">
+  <header class="topbar"><div><div class="eyebrow" id="pageEyebrow">YOUR PERSONAL UNIVERSE</div><h1 id="pageTitle">Good morning.</h1><p class="subtitle" id="pageSubtitle">A little space to notice, remember and grow.</p></div><div class="actions"><button class="btn" id="exportTop">↓ <span>Export</span></button><button class="btn primary" id="createTop">＋ <span>New entry</span></button></div></header>
+  <section id="view"></section>
+</main>
+</div>
+<nav class="mobile-nav">
+  <button class="active" data-page="wisdom"><b>♧</b>Wisdom</button><button data-page="library"><b>▤</b>Library</button><button data-page="calendar"><b>▦</b>Calendar</button><button data-page="profile"><b>◉</b>Profile</button>
+</nav>
+<div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="importFile" accept="application/json" hidden>
+<script>
+(() => {
+const KEY='profet_mvp_v1';
+const TYPES={
+ thought:{label:'Thought',icon:'✦',color:'#c99b51',bg:'#f5ead8',hint:'Something on your mind'},
+ memory:{label:'Memory',icon:'▧',color:'#b77c6e',bg:'#f3e5e1',hint:'Something that happened'},
+ question:{label:'Question',icon:'?',color:'#7595a5',bg:'#e6eef1',hint:"Something you're curious about"},
+ idea:{label:'Idea',icon:'✧',color:'#87996b',bg:'#e9eee1',hint:'Something you imagine'},
+ reflection:{label:'Reflection',icon:'◌',color:'#9a83a8',bg:'#eee8f1',hint:"Something you've reconsidered"}
+};
+let state={entries:[],settings:{theme:'light'}};
+let page='wisdom',filter='all',searchTerm='',selectedDate=new Date(),calendarMonth=new Date(),editingId=null,detailId=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dateKey=d=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
+const niceDate=d=>new Date(d).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY));if(v&&Array.isArray(v.entries))state=v}catch(e){}}
+function sampleData(){
+ const now=new Date(),ago=n=>{let d=new Date(now);d.setDate(d.getDate()-n);return d.toISOString()};
+ return [
+ {id:uid(),type:'thought',title:'Learning is about making connections',content:'Perhaps learning a language is less about memorizing isolated words and more about building associations between ideas.',createdAt:ago(0),updatedAt:ago(0),topics:['Learning','Languages'],mood:'Curious',pinned:true},
+ {id:uid(),type:'memory',title:'A quiet afternoon outdoors',description:'A long walk, fresh air and a moment to slow down. Nothing extraordinary happened, and that was exactly what made it lovely.',occurredAt:dateKey(ago(2)),createdAt:ago(2),updatedAt:ago(2),topics:['Everyday life'],images:[]},
+ {id:uid(),type:'question',title:'Why do languages develop grammatical gender?',context:'Some languages classify nouns into grammatical genders, while others do not. What historical processes explain this?',status:'investigating',researchNotes:[],createdAt:ago(4),updatedAt:ago(4),topics:['Languages']},
+ {id:uid(),type:'idea',title:'A game for learning multiple languages',description:'A world where learners discover connections between languages through exploration, stories and small challenges.',nextAction:'Sketch the first playable experience',status:'exploring',createdAt:ago(7),updatedAt:ago(7),topics:['Games','Learning']},
+ {id:uid(),type:'reflection',title:'What makes a good day?',content:'I used to think a good day needed to be productive. Lately, I value days that leave room for curiosity and unexpected moments.',createdAt:ago(10),updatedAt:ago(10),topics:['Personal growth'],relatedObjects:[]}
+ ];
+}
+function persistRender(){save();render()}
+function setPage(p){page=p;document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===p));render()}
+function header(title,sub,eyebrow){$('#pageTitle').textContent=title;$('#pageSubtitle').textContent=sub;$('#pageEyebrow').textContent=eyebrow}
+function count(type){return state.entries.filter(e=>!e.archived&&(!type||e.type===type)).length}
+function card(e){let t=TYPES[e.type],desc=e.content||e.description||e.context||e.answer||'';return `<article class="entry-card" data-open="${e.id}"><div class="entry-top"><span class="type-pill" style="background:${t.bg};color:${t.color}">${t.icon} ${t.label}</span><span style="font-size:10px;color:#aaa">${e.pinned?'★':''}</span></div><h3>${esc(e.title||'Untitled')}</h3><p>${esc(desc||t.hint)}</p><div class="entry-meta"><span>${niceDate(e.createdAt)}</span><span>${(e.topics||[]).slice(0,2).map(esc).join(' · ')}</span></div></article>`}
+function treeSVG(){return `<svg viewBox="0 0 260 220" role="img" aria-label="Illustration of a golden tree"><ellipse cx="130" cy="201" rx="91" ry="10" fill="#c8b58e" opacity=".35"/><path d="M128 190 C120 155 139 132 126 102 C119 82 128 60 135 43" fill="none" stroke="#87683e" stroke-width="10" stroke-linecap="round"/><path d="M129 125 C100 111 89 89 72 76 M130 108 C158 93 165 70 184 59 M127 151 C97 142 83 130 62 120 M132 143 C161 134 180 115 198 103" fill="none" stroke="#9a7848" stroke-width="6" stroke-linecap="round"/><g fill="#b9a66e"><circle cx="73" cy="66" r="28"/><circle cx="111" cy="48" r="31"/><circle cx="157" cy="48" r="33"/><circle cx="193" cy="78" r="27"/><circle cx="65" cy="111" r="23"/><circle cx="174" cy="111" r="28"/><circle cx="124" cy="83" r="33"/></g><g fill="#d9c697"><circle cx="80" cy="59" r="13"/><circle cx="145" cy="39" r="12"/><circle cx="183" cy="72" r="11"/><circle cx="112" cy="75" r="10"/><circle cx="58" cy="108" r="8"/></g><g fill="#9b8859"><path d="M125 187l-27 15h60l-28-15z"/></g></svg>`}
+function renderWisdom(){
+ header('Good morning.','A little space to notice, remember and grow.','YOUR PERSONAL UNIVERSE');
+ const recent=[...state.entries].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,4);
+ $('#view').innerHTML=`<div class="grid hero-grid">
+ <div class="panel tree-panel"><div class="tree-head"><div class="eyebrow">YOUR WISDOM TREE</div><div class="tree-level">✦ YOUR GARDEN IS GROWING</div></div><div class="tree-copy"><h2>Every thought<br>starts somewhere.</h2><p>Collect little moments of curiosity. Over time, they become something meaningful.</p><button class="btn gold" onclick="openCreate()">＋ Plant a thought</button></div><div class="tree-art">${treeSVG()}</div></div>
+ <div class="panel stats-panel"><div class="stats-head"><h3>Your universe</h3><span style="font-size:11px;color:var(--muted)">All time</span></div><div class="stat-grid">${Object.entries(TYPES).map(([k,t])=>`<div class="stat"><strong>${count(k)}</strong><span>${t.label}s</span></div>`).join('')}</div></div></div>
+ <div class="section-head"><h2>Plant a new seed</h2></div><div class="grid type-grid">${Object.entries(TYPES).map(([k,t])=>`<button class="type-card" onclick="openCreate('${k}')"><div class="type-symbol" style="background:${t.bg};color:${t.color}">${t.icon}</div><strong>${t.label}</strong><small>${t.hint}</small></button>`).join('')}</div>
+ <div class="section-head"><h2>Recently captured</h2><button class="btn small" onclick="setPage('library')">View library →</button></div>
+ ${recent.length?`<div class="recent-list">${recent.map(card).join('')}</div>`:empty('Your garden is waiting','Save your first thought, memory or idea.','＋ Create your first entry')}`;
+}
+function empty(title,desc,button='Create entry'){return `<div class="empty"><div class="big">✧</div><h3>${title}</h3><p>${desc}</p><button class="btn primary" onclick="openCreate()">${button}</button></div>`}
+function renderLibrary(){
+ header('Your library','Everything you have collected, all in one place.','THE COLLECTION');
+ const entries=state.entries.filter(e=>!e.archived).filter(e=>filter==='all'||e.type===filter).filter(e=>(e.title+' '+(e.content||e.description||e.context||'')+' '+(e.topics||[]).join(' ')).toLowerCase().includes(searchTerm.toLowerCase())).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+ $('#view').innerHTML=`<div class="toolbar"><input class="field search" id="searchInput" placeholder="⌕  Search your entries..." value="${esc(searchTerm)}"><select class="field" id="sortSelect"><option value="new">Newest first</option><option value="old">Oldest first</option></select></div><div class="chips" style="margin-bottom:18px"><button class="chip ${filter==='all'?'active':''}" data-filter="all">All · ${count()}</button>${Object.entries(TYPES).map(([k,t])=>`<button class="chip ${filter===k?'active':''}" data-filter="${k}">${t.label} · ${count(k)}</button>`).join('')}</div>${entries.length?`<div class="recent-list" id="entryList">${entries.map(card).join('')}</div>`:empty('Nothing here yet','Try another filter or create a new entry.')}`;
+ $('#searchInput').addEventListener('input',e=>{searchTerm=e.target.value;renderLibrary();let x=$('#searchInput');x.focus();x.setSelectionRange(searchTerm.length,searchTerm.length)});
+ $('#sortSelect').addEventListener('change',e=>{if(e.target.value==='old')entries.reverse();$('#entryList').innerHTML=entries.map(card).join('')});
+ document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;renderLibrary()});
+}
+function renderCalendar(){
+ header('Your timeline','A calendar of the things you chose to keep.','LOOKING BACK');
+ const y=calendarMonth.getFullYear(),m=calendarMonth.getMonth(),first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate(),prev=new Date(y,m,0).getDate();
+ const selected=dateKey(selectedDate),all=[];
+ for(let i=0;i<42;i++){let n=i-start+1,d=new Date(y,m,n),inMonth=n>0&&n<=days,actual=inMonth?n:n<=0?prev+n:n-days,dt=inMonth?new Date(y,m,n):n<=0?new Date(y,m-1,actual):new Date(y,m+1,actual),key=dateKey(dt),es=state.entries.filter(e=>dateKey(e.type==='memory'&&e.occurredAt?e.occurredAt:e.createdAt)===key&&!e.archived);all.push(`<button class="day ${inMonth?'':'muted'} ${key===selected?'selected':''} ${key===dateKey(new Date())?'today':''}" data-date="${key}"><span class="day-num">${actual}</span><div class="dots">${es.slice(0,4).map(e=>`<i class="dot" style="background:${TYPES[e.type].color}"></i>`).join('')}</div></button>`)}
+ const selectedEntries=state.entries.filter(e=>dateKey(e.type==='memory'&&e.occurredAt?e.occurredAt:e.createdAt)===selected&&!e.archived);
+ $('#view').innerHTML=`<div class="panel calendar-wrap"><div class="calendar-head"><button class="btn small" id="prevMonth">←</button><h2>${calendarMonth.toLocaleDateString(undefined,{month:'long',year:'numeric'})}</h2><button class="btn small" id="nextMonth">→</button></div><div class="calendar">${['MON','TUE','WED','THU','FRI','SAT','SUN'].map(d=>`<div class="weekday">${d}</div>`).join('')}${all.join('')}</div><div class="day-detail"><div class="section-head" style="margin:0 0 12px"><h3>${niceDate(selected)}</h3><span style="font-size:11px;color:var(--muted)">${selectedEntries.length} entries</span></div>${selectedEntries.length?`<div class="recent-list">${selectedEntries.map(card).join('')}</div>`:`<p class="subtitle">No entries on this day.</p>`}</div></div>`;
+ $('#prevMonth').onclick=()=>{calendarMonth=new Date(y,m-1,1);renderCalendar()};$('#nextMonth').onclick=()=>{calendarMonth=new Date(y,m+1,1);renderCalendar()};
+ document.querySelectorAll('[data-date]').forEach(b=>b.onclick=()=>{selectedDate=new Date(b.dataset.date+'T12:00:00');renderCalendar()});
+}
+function renderProfile(){
+ header('Your space','A few details about your personal archive.','PROFILE & DATA');
+ const total=state.entries.length,days=new Set(state.entries.map(e=>dateKey(e.createdAt))).size;
+ $('#view').innerHTML=`<div class="grid profile-grid">${[['Total entries',total],['Days captured',days],['Topics used',new Set(state.entries.flatMap(e=>e.topics||[])).size]].map(([l,n])=>`<div class="panel profile-card"><strong>${n}</strong><span>${l}</span></div>`).join('')}</div>
+ <div class="section-head"><h2>Your data</h2></div><div class="panel" style="padding:22px;display:grid;gap:15px"><div><h3>Export your garden</h3><p class="subtitle">Download all your entries as a JSON file. Keep a backup somewhere safe.</p><button class="btn primary" onclick="exportData()">↓ Export JSON</button></div><hr style="border:0;border-top:1px solid var(--line);width:100%"><div><h3>Import a backup</h3><p class="subtitle">Restore entries from a Profet JSON export.</p><button class="btn" onclick="document.getElementById('importFile').click()">↑ Choose JSON file</button></div><hr style="border:0;border-top:1px solid var(--line);width:100%"><div><h3>Sample content</h3><p class="subtitle">Add example entries to explore the experience, or clear the current archive.</p><div class="actions"><button class="btn" onclick="addSamples()">＋ Add examples</button><button class="btn" onclick="clearData()">Clear all data</button></div></div></div><p class="subtitle" style="margin-top:18px;font-size:11px">Profet MVP v0.1 · Your data is stored locally in this browser. Clearing browser storage may erase it.</p>`;
+}
+function render(){if(page==='wisdom')renderWisdom();if(page==='library')renderLibrary();if(page==='calendar')renderCalendar();if(page==='profile')renderProfile();document.querySelectorAll('[data-open]').forEach(el=>el.onclick=()=>openDetail(el.dataset.open))}
+function fieldsFor(type,e={}){
+ const common=`<label>Title<input name="title" required maxlength="100" value="${esc(e.title||'')}" placeholder="Give it a name..."></label>`;
+ const topic=`<label>Topics <span style="font-weight:400;color:#999">(comma separated)</span><input name="topics" value="${esc((e.topics||[]).join(', '))}" placeholder="Learning, travel, life..."></label>`;
+ let specific='';
+ if(type==='thought')specific=`<label>Your thought<textarea name="content" required placeholder="Write whatever is on your mind...">${esc(e.content||'')}</textarea></label><label>Mood (optional)<select name="mood"><option value="">Choose a mood</option>${['Curious','Happy','Calm','Inspired','Worried','Thoughtful','Grateful'].map(x=>`<option ${e.mood===x?'selected':''}>${x}</option>`).join('')}</select></label>`;
+ if(type==='memory')specific=`<label>What happened?<textarea name="description" required placeholder="Describe this moment...">${esc(e.description||'')}</textarea></label><div class="form-row"><label>Date of memory<input type="date" name="occurredAt" value="${esc(e.occurredAt||dateKey(new Date()))}"></label><label>Location<input name="location" value="${esc(e.location||'')}" placeholder="Where was it?"></label></div>`;
+ if(type==='question')specific=`<label>Your question<textarea name="context" required placeholder="What are you curious about?">${esc(e.context||'')}</textarea></label><label>Status<select name="status">${[['open','Open'],['investigating','Investigating'],['answered','Answered'],['archived','Archived']].map(([v,l])=>`<option value="${v}" ${(e.status||'open')===v?'selected':''}>${l}</option>`).join('')}</select></label><label>Answer (optional)<textarea name="answer" placeholder="What have you discovered?">${esc(e.answer||'')}</textarea></label>`;
+ if(type==='idea')specific=`<label>Describe your idea<textarea name="description" required placeholder="Explore the possibility...">${esc(e.description||'')}</textarea></label><label>Next action<input name="nextAction" value="${esc(e.nextAction||'')}" placeholder="What's one thing you could do?"></label><label>Stage<select name="status">${[['seed','Seed'],['exploring','Exploring'],['developing','Developing'],['testing','Testing'],['realized','Realized'],['archived','Archived']].map(([v,l])=>`<option value="${v}" ${(e.status||'seed')===v?'selected':''}>${l}</option>`).join('')}</select></label>`;
+ if(type==='reflection')specific=`<label>Your reflection<textarea name="content" required placeholder="What do you think about it now?">${esc(e.content||'')}</textarea></label><label>Reflect on an entry (optional)<select name="relatedId"><option value="">No linked entry</option>${state.entries.filter(x=>x.id!==e.id).map(x=>`<option value="${x.id}" ${(e.relatedObjects||[]).some(r=>r.id===x.id)?'selected':''}>${TYPES[x.type].label}: ${esc(x.title)}</option>`).join('')}</select></label>`;
+ return common+specific+topic;
+}
+function openCreate(type='thought',existing=null){
+ editingId=existing?.id||null;const t=type||existing?.type||'thought',isEdit=!!existing;
+ $('#modal').innerHTML=`<div class="modal-head"><div><div class="eyebrow">${isEdit?'EDIT ENTRY':'NEW ENTRY'}</div><h2>${isEdit?'Shape this entry':`Create a ${TYPES[t].label.toLowerCase()}`}</h2></div><button class="icon-btn" onclick="closeModal()">✕</button></div><form id="entryForm"><div class="form-grid">${fieldsFor(t,existing||{})}</div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" type="submit">${isEdit?'Save changes':'Save entry'}</button></div></form>`;
+ $('#modalBackdrop').classList.add('show');
+ $('#entryForm').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),obj=Object.fromEntries(fd.entries());const entry={...(existing||{}),id:existing?.id||uid(),type:t,title:obj.title.trim(),createdAt:existing?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString(),topics:obj.topics.split(',').map(s=>s.trim()).filter(Boolean),archived:false};
+ ['content','description','context','mood','status','answer','nextAction','occurredAt','location'].forEach(k=>{if(obj[k]!==undefined&&obj[k]!=='')entry[k]=obj[k];else if(obj[k]!==undefined)delete entry[k]});
+ if(t==='reflection')entry.relatedObjects=obj.relatedId?[{type:state.entries.find(x=>x.id===obj.relatedId)?.type||'thought',id:obj.relatedId}]:[];
+ if(existing){state.entries=state.entries.map(x=>x.id===existing.id?entry:x)}else state.entries.unshift(entry);
+ persistRender();closeModal();toast(isEdit?'Entry updated':'Entry saved to your garden')};
+}
+function openDetail(id){
+ const e=state.entries.find(x=>x.id===id);if(!e)return;detailId=id;const t=TYPES[e.type],desc=e.content||e.description||e.context||'';
+ const linked=(e.relatedObjects||[]).map(r=>state.entries.find(x=>x.id===r.id)).filter(Boolean);
+ $('#modal').innerHTML=`<div class="modal-head"><span class="type-pill" style="background:${t.bg};color:${t.color}">${t.icon} ${t.label}</span><button class="icon-btn" onclick="closeModal()">✕</button></div><h2>${esc(e.title)}</h2><div class="detail-meta">${niceDate(e.createdAt)}${e.topics?.length?' · '+e.topics.map(esc).join(', '):''}</div><div class="detail-content">${esc(desc||'No description.')}</div>${e.answer?`<div class="related"><b>Answer</b><p>${esc(e.answer)}</p></div>`:''}${e.nextAction?`<div class="related"><b>Next action</b><p>${esc(e.nextAction)}</p></div>`:''}${e.location?`<div class="related"><b>Location</b><p>${esc(e.location)}</p></div>`:''}${linked.length?`<div class="related"><b>Reflecting on</b><p>${linked.map(x=>esc(x.title)).join(', ')}</p></div>`:''}<div class="form-actions"><button class="btn" onclick="deleteEntry('${e.id}')">Delete</button><div class="actions"><button class="btn" onclick="closeModal()">Close</button><button class="btn primary" onclick="editEntry('${e.id}')">Edit</button></div></div>`;
+ $('#modalBackdrop').classList.add('show');
+}
+function editEntry(id){let e=state.entries.find(x=>x.id===id);if(e)openCreate(e.type,e)}
+function deleteEntry(id){if(!confirm('Delete this entry? This cannot be undone.'))return;state.entries=state.entries.filter(e=>e.id!==id);state.entries.forEach(e=>{if(e.relatedObjects)e.relatedObjects=e.relatedObjects.filter(r=>r.id!==id)});persistRender();closeModal();toast('Entry deleted')}
+function closeModal(){$('#modalBackdrop').classList.remove('show');editingId=null;detailId=null}
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function exportData(){const blob=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='profet-backup.json';a.click();URL.revokeObjectURL(url);toast('Your backup is ready')}
+function addSamples(){if(state.entries.length&&!confirm('Add sample entries to your existing archive?'))return;state.entries=[...sampleData(),...state.entries];persistRender();toast('Example entries added')}
+function clearData(){if(!confirm('Delete every entry stored in this browser? Export a backup first if you need one.'))return;state.entries=[];persistRender();toast('Your archive is clear')}
+function openCreateGlobal(type){openCreate(type)}
+window.openCreate=openCreateGlobal;window.closeModal=closeModal;window.setPage=setPage;window.exportData=exportData;window.addSamples=addSamples;window.clearData=clearData;window.deleteEntry=deleteEntry;window.editEntry=editEntry;
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>setPage(b.dataset.page)));
+$('#createTop').onclick=()=>openCreate();$('#exportTop').onclick=exportData;
+$('#modalBackdrop').addEventListener('click',e=>{if(e.target===$('#modalBackdrop'))closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+$('#importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.entries))throw new Error();if(!confirm(`Import ${d.entries.length} entries? This replaces the current archive.`))return;state.entries=d.entries;persistRender();toast('Backup imported')}catch(err){alert('This file does not look like a valid Profet backup.')}e.target.value=''});
+load();if(!state.entries.length)state.entries=sampleData();save();render();
+})();
+</script>
+</body>
+</html>
